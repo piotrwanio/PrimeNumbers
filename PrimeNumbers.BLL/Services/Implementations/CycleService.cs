@@ -32,7 +32,10 @@ namespace PrimeNumbers.BLL.Services.Implementations
 
             while (_primesGenerator.TurnedOn)
             {
-                (listOfPrimes, x, y, limit) = await _primesGenerator.GenerateUsingSieveOfAtkin(limit, elpsd, x, y, listOfPrimes.Last());
+                IList<int> listOfPrimesTemp = new List<int>();
+                (listOfPrimesTemp, x, y, limit) = await _primesGenerator.GenerateUsingSieveOfAtkin(limit, elpsd, x, y, listOfPrimes.Last());
+                if (listOfPrimesTemp.Count != 0) listOfPrimes = listOfPrimesTemp;
+
                 if (x * x > limit && y * y > limit)
                 {
                     x = 1;

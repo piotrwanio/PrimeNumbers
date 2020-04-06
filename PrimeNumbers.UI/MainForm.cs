@@ -19,26 +19,32 @@ namespace PrimeNumbers.UI
     //TODO: maybe showing detailed info in separate tab? DONE+-
     //TODO: Stopping cycle DONE
     //TODO: Add missing informations to CycleInfo about how much time it takes to finish cycle etc. DONE+-
-    //TODO: FIX BIG PRIMES
+    //TODO: FIX BIG PRIMES DONE
+    //TODO: Automapper profile utilize DONE
+
+
     //TODO: change ints to longs or ulongs?
     //TODO: Add handling out of memory and overflow exceptions and info about maximum number handled by long numbers
     //TODO: info about not finding bigger number in next cycle
+
     //TODO: Add logging
+
     //TODO: maybe xmldocument instead of xmlserializer
     //TODO: Maybe reporting service?
-    //TODO: Automapper profile utilize
+
 
     public partial class MainForm : Form
     {
         private readonly ICycleService _cycleService;
         private readonly IXmlWriter _xmlWriter;
         private readonly IMapper _mapper;
-        long elpsd = -DateTime.Now.Ticks;
+        long startWholeTime = -DateTime.Now.Ticks;
         long startCycleTime = -DateTime.Now.Ticks;
         int cycleId = 1;
         int cycleTimeInSec = 10;
         int breakTimeInSec = 10;
 
+        TimeSpan wholeTime = new TimeSpan();
         private readonly IList<BasicCycleInfo> _allCycles = new List<BasicCycleInfo>();
         PrimeGenerationState generatingState = new PrimeGenerationState()
         {
@@ -60,7 +66,6 @@ namespace PrimeNumbers.UI
 
             //runGeneralTimerAsync();
             timer1.Interval = 1000;
-            timer1.Start();
 
             timer2.Interval = 1000;
 
@@ -107,8 +112,8 @@ namespace PrimeNumbers.UI
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            var cycleTime = TimeSpan.FromTicks(elpsd + DateTime.Now.Ticks);
-            this.wholeTimeTextBox.Text = cycleTime.ToString(@"hh\:mm\:ss");
+            wholeTime += TimeSpan.FromMilliseconds(1000);
+            this.wholeTimeTextBox.Text = wholeTime.ToString(@"hh\:mm\:ss");
         }
 
         private void wholeTimeLabel_Click(object sender, EventArgs e)
@@ -148,13 +153,16 @@ namespace PrimeNumbers.UI
             var breakTime = 1;
 
             timer2.Start();
+            timer1.Start();
 
             await Task.Run(async () =>
                {
                    startCycleTime = -DateTime.Now.Ticks;
                    lastCycleResult = await _cycleService.StartCycle(cycleTime, breakTime, generatingState);
                    lastCycleResult.CycleExecutionTime = TimeSpan.FromTicks(startCycleTime + DateTime.Now.Ticks);
-                   lastCycleResult.PrimeComputeTime = TimeSpan.FromTicks(elpsd + DateTime.Now.Ticks);
+                   timer2.Stop();
+                   timer1.Stop();
+                   lastCycleResult.PrimeComputeTime = wholeTime;
                    lastCycleResult.CycleId = cycleId;
                    cycleId++;
                });
@@ -162,7 +170,6 @@ namespace PrimeNumbers.UI
             generatingState = lastCycleResult.State;
 
 
-            timer2.Stop();
 
             var shortCycleResult = _mapper.Map<BasicCycleInfo>(lastCycleResult);
             _allCycles.Add(shortCycleResult);
@@ -177,8 +184,6 @@ namespace PrimeNumbers.UI
                 item.Text = prime.ToString();
                 listView1.Items.Add(item);
             }
-            elpsd += DateTime.Now.Ticks;
-            listView1.Items.Add(elpsd.ToString());
             listView1.EndUpdate();
 
         }

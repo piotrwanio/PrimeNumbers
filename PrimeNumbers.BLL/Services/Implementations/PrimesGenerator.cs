@@ -17,28 +17,22 @@ namespace PrimeNumbers.BLL.Services.Implementations
         {
             if (isPrime.Length < limit)
             {
-                bool[] sieveTemp = isPrime;
                 isPrime = new bool[limit + 1];
-                sieveTemp.CopyTo(isPrime, 0);
+                for (int i = 0; i < limit; i++)
+                    isPrime[i] = false;
             }
             var sqrt = Math.Sqrt(limit);
 
             int yInit = y;
+            int xInit = x;
 
             for (; x <= sqrt; x++)
             {
-                if (!TurnedOn)
-                {
-                    break;
-                }
+                if (x == xInit) { y = yInit; }
+                else { y = 1; }
 
-                y = yInit;
                 for (; y <= sqrt; y++)
                 {
-                    if (!TurnedOn)
-                    {
-                        break;
-                    }
                     var n = 4 * x * x + y * y;
                     if (n <= limit && (n % 12 == 1 || n % 12 == 5))
                         isPrime[n] ^= true;
@@ -50,8 +44,18 @@ namespace PrimeNumbers.BLL.Services.Implementations
                     n = 3 * x * x - y * y;
                     if (x > y && n <= limit && n % 12 == 11)
                         isPrime[n] ^= true;
+                    if (!TurnedOn)
+                    {
+                        return (new List<int>(), x, y, limit);
+                    }
+                }
+                if (!TurnedOn)
+                {
+                    return (new List<int>(), x, y, limit);
                 }
             }
+            isPrime[2] = isPrime[3] = isPrime[5] = true;
+
             for (int n = 5; n <= sqrt; n++)
                 if (isPrime[n])
                 {

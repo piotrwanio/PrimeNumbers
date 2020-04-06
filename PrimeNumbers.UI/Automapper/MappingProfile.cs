@@ -12,7 +12,8 @@ namespace PrimeNumbers.UI.Automapper
     {
         public MappingProfile()
         {
-            CreateMap<CycleInfo, BasicCycleInfo>();
+            CreateMap<CycleInfo, BasicCycleInfo>()
+                .ForMember(dest => dest.ComputedBiggestPrime, opt => opt.MapFrom(src => src.Primes.Count != 0 ? src.Primes.Max() : 0));
         }
     }
 }

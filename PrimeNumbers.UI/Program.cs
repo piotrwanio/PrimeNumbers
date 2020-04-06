@@ -4,6 +4,7 @@ using PrimeNumbers.BLL;
 using PrimeNumbers.BLL.Services.Implementations;
 using PrimeNumbers.BLL.Services.Interfaces;
 using PrimeNumbers.DTO;
+using PrimeNumbers.UI.Automapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,8 @@ namespace PrimeNumbers.UI
             var loadedProfiles = RetrieveProfiles();
 
 
-            builder.RegisterTypes(loadedProfiles.ToArray());
+            //builder.RegisterTypes(loadedProfiles.ToArray());
+            builder.RegisterType<MappingProfile>();
             builder.RegisterType<PrimesGenerator>().As<IPrimesGenerator>();
             builder.RegisterType<CycleService>().As<ICycleService>();
             builder.RegisterType<XmlWriter>().As<IXmlWriter>();
@@ -38,8 +40,19 @@ namespace PrimeNumbers.UI
 
             builder.Register(context => new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CycleInfo, BasicCycleInfo>()
-                            .ForMember(dest => dest.ComputedBiggestPrime, opt => opt.MapFrom(src => src.Primes.Max()));
+
+                cfg.ConstructServicesUsing(context.Resolve);
+
+                //foreach (var profile in loadedProfiles)
+                //{
+                //    var resolvedProfile = context.Resolve(profile) as Profile;
+                //    cfg.AddProfile(resolvedProfile);
+                //}
+                var resolvedProfile = context.Resolve< MappingProfile>() as Profile;
+
+                cfg.AddProfile(resolvedProfile);
+                //cfg.CreateMap<CycleInfo, BasicCycleInfo>()
+                //            .ForMember(dest => dest.ComputedBiggestPrime, opt => opt.MapFrom(src => src.Primes.Max()));
 
                 //etc...
             })).AsSelf().SingleInstance();
@@ -48,6 +61,7 @@ namespace PrimeNumbers.UI
             {
                 //This resolves a new context that can be used later.
                 var context = c.Resolve<IComponentContext>();
+    
                 var config = context.Resolve<MapperConfiguration>();
                 return config.CreateMapper(context.Resolve);
             });
@@ -87,7 +101,7 @@ namespace PrimeNumbers.UI
         private static List<Type> RetrieveProfiles()
         {
             var assemblyNames = Assembly.GetExecutingAssembly().GetReferencedAssemblies()
-                .Where(a => a.Name.StartsWith("Some"));
+                .Where(a => a.Name.StartsWith("PrimeNumbers.UI.Automapper"));
             var assemblies = assemblyNames.Select(an => Assembly.Load(an));
             var loadedProfiles = ExtractProfiles(assemblies);
             return loadedProfiles;
