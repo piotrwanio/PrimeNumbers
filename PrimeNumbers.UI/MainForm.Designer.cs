@@ -31,28 +31,40 @@ namespace PrimeNumbers.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("ssss");
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.exportAsXmlButton = new System.Windows.Forms.Button();
             this.stopCycleButton = new System.Windows.Forms.Button();
             this.startCyclesButton = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cycleTimeTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.allCyclesReportTable = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.wholeTimeTextBox = new System.Windows.Forms.TextBox();
+            this.wholeTimeLabel = new System.Windows.Forms.Label();
+            this.cycleTimeTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.allCyclesReportTable.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -61,14 +73,14 @@ namespace PrimeNumbers.UI
             this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.85658F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.14342F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.67332F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.32668F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 0);
             this.tableLayoutPanel1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1, 4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 8);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.37194F));
@@ -85,14 +97,14 @@ namespace PrimeNumbers.UI
             this.panel1.Controls.Add(this.startCyclesButton);
             this.panel1.Location = new System.Drawing.Point(5, 86);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(280, 373);
+            this.panel1.Size = new System.Drawing.Size(238, 373);
             this.panel1.TabIndex = 6;
             // 
             // exportAsXmlButton
             // 
             this.exportAsXmlButton.Location = new System.Drawing.Point(6, 85);
             this.exportAsXmlButton.Name = "exportAsXmlButton";
-            this.exportAsXmlButton.Size = new System.Drawing.Size(271, 32);
+            this.exportAsXmlButton.Size = new System.Drawing.Size(229, 32);
             this.exportAsXmlButton.TabIndex = 2;
             this.exportAsXmlButton.Text = "Export data to xml";
             this.exportAsXmlButton.UseVisualStyleBackColor = true;
@@ -102,34 +114,85 @@ namespace PrimeNumbers.UI
             // 
             this.stopCycleButton.Location = new System.Drawing.Point(6, 44);
             this.stopCycleButton.Name = "stopCycleButton";
-            this.stopCycleButton.Size = new System.Drawing.Size(271, 35);
+            this.stopCycleButton.Size = new System.Drawing.Size(229, 35);
             this.stopCycleButton.TabIndex = 4;
             this.stopCycleButton.Text = "Stop cycle of generating primes";
             this.stopCycleButton.UseVisualStyleBackColor = true;
+            this.stopCycleButton.Click += new System.EventHandler(this.stopCycleButton_Click);
             // 
             // startCyclesButton
             // 
             this.startCyclesButton.Location = new System.Drawing.Point(6, 3);
             this.startCyclesButton.Name = "startCyclesButton";
-            this.startCyclesButton.Size = new System.Drawing.Size(271, 35);
+            this.startCyclesButton.Size = new System.Drawing.Size(229, 35);
             this.startCyclesButton.TabIndex = 3;
             this.startCyclesButton.Text = "Start next cycle of generating primes";
             this.startCyclesButton.UseVisualStyleBackColor = true;
             this.startCyclesButton.Click += new System.EventHandler(this.startCyclesButton_Click);
             // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.label3);
+            this.panel4.Location = new System.Drawing.Point(5, 5);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(238, 73);
+            this.panel4.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label3.Location = new System.Drawing.Point(23, 28);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(188, 20);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Prime numbers generator";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.listView1);
-            this.panel2.Location = new System.Drawing.Point(293, 86);
+            this.panel2.Controls.Add(this.tabControl1);
+            this.panel2.Location = new System.Drawing.Point(251, 86);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(506, 373);
+            this.panel2.Size = new System.Drawing.Size(548, 373);
             this.panel2.TabIndex = 7;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(2, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(543, 370);
+            this.tabControl1.TabIndex = 8;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.listView1);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(535, 344);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Previous cycle details";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(-2, 19);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(534, 325);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(168, 14);
+            this.label2.Location = new System.Drawing.Point(6, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(172, 13);
             this.label2.TabIndex = 7;
@@ -137,43 +200,106 @@ namespace PrimeNumbers.UI
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // listView1
+            // tabPage2
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
-            this.listView1.Location = new System.Drawing.Point(3, 30);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(500, 340);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.tabPage2.Controls.Add(this.allCyclesReportTable);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(535, 344);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Report from all cycles";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // panel3
+            // allCyclesReportTable
             // 
-            this.panel3.Controls.Add(this.textBox1);
-            this.panel3.Controls.Add(this.label4);
-            this.panel3.Controls.Add(this.cycleTimeTextBox);
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Location = new System.Drawing.Point(293, 5);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(503, 71);
-            this.panel3.TabIndex = 8;
+            this.allCyclesReportTable.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.allCyclesReportTable.ColumnCount = 4;
+            this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.25F));
+            this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.75F));
+            this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
+            this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.allCyclesReportTable.Controls.Add(this.label7, 3, 0);
+            this.allCyclesReportTable.Controls.Add(this.label6, 2, 0);
+            this.allCyclesReportTable.Controls.Add(this.label5, 1, 0);
+            this.allCyclesReportTable.Controls.Add(this.label4, 0, 0);
+            this.allCyclesReportTable.Location = new System.Drawing.Point(3, 0);
+            this.allCyclesReportTable.Name = "allCyclesReportTable";
+            this.allCyclesReportTable.RowCount = 1;
+            this.allCyclesReportTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.allCyclesReportTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.allCyclesReportTable.Size = new System.Drawing.Size(529, 338);
+            this.allCyclesReportTable.TabIndex = 0;
+            this.allCyclesReportTable.Paint += new System.Windows.Forms.PaintEventHandler(this.allCyclesReportTable_Paint);
             // 
-            // textBox1
+            // label7
             // 
-            this.textBox1.Location = new System.Drawing.Point(136, 43);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(130, 20);
-            this.textBox1.TabIndex = 8;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(425, 1);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(55, 13);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "Cycle time";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(281, 1);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(99, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Prime compute time";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(91, 1);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(120, 13);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Largest prime computed";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 46);
+            this.label4.Location = new System.Drawing.Point(4, 1);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(117, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Whole calculation time:";
+            this.label4.Size = new System.Drawing.Size(45, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Cycle Id";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.wholeTimeTextBox);
+            this.panel3.Controls.Add(this.wholeTimeLabel);
+            this.panel3.Controls.Add(this.cycleTimeTextBox);
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Location = new System.Drawing.Point(251, 5);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(414, 65);
+            this.panel3.TabIndex = 8;
+            // 
+            // wholeTimeTextBox
+            // 
+            this.wholeTimeTextBox.Location = new System.Drawing.Point(136, 43);
+            this.wholeTimeTextBox.Name = "wholeTimeTextBox";
+            this.wholeTimeTextBox.Size = new System.Drawing.Size(130, 20);
+            this.wholeTimeTextBox.TabIndex = 8;
+            // 
+            // wholeTimeLabel
+            // 
+            this.wholeTimeLabel.AutoSize = true;
+            this.wholeTimeLabel.Location = new System.Drawing.Point(5, 46);
+            this.wholeTimeLabel.Name = "wholeTimeLabel";
+            this.wholeTimeLabel.Size = new System.Drawing.Size(117, 13);
+            this.wholeTimeLabel.TabIndex = 7;
+            this.wholeTimeLabel.Text = "Whole calculation time:";
+            this.wholeTimeLabel.Click += new System.EventHandler(this.wholeTimeLabel_Click);
             // 
             // cycleTimeTextBox
             // 
@@ -193,46 +319,35 @@ namespace PrimeNumbers.UI
             this.label1.Text = "Cycle calculation  time:";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.label3);
-            this.panel4.Location = new System.Drawing.Point(5, 5);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(280, 71);
-            this.panel4.TabIndex = 9;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label3.Location = new System.Drawing.Point(41, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(188, 20);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Prime numbers generator";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
-            // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(868, 471);
+            this.ClientSize = new System.Drawing.Size(819, 484);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "MainForm";
             this.Text = "Prime numbers generator - Pivotal recruitment";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.allCyclesReportTable.ResumeLayout(false);
+            this.allCyclesReportTable.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -240,21 +355,30 @@ namespace PrimeNumbers.UI
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button startCyclesButton;
         private System.Windows.Forms.Button stopCycleButton;
         private System.Windows.Forms.Button exportAsXmlButton;
         private System.Windows.Forms.TextBox cycleTimeTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox wholeTimeTextBox;
+        private System.Windows.Forms.Label wholeTimeLabel;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TableLayoutPanel allCyclesReportTable;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }
 
