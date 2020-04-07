@@ -50,12 +50,17 @@ namespace PrimeNumbers.UI
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.cycleNumberTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.breakTimeTextBox = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.wholeTimeTextBox = new System.Windows.Forms.TextBox();
             this.wholeTimeLabel = new System.Windows.Forms.Label();
             this.cycleTimeTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.breakTimer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -213,12 +218,13 @@ namespace PrimeNumbers.UI
             // 
             // allCyclesReportTable
             // 
+            this.allCyclesReportTable.AutoScroll = true;
             this.allCyclesReportTable.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.allCyclesReportTable.ColumnCount = 4;
             this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.25F));
             this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.75F));
             this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 143F));
-            this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.allCyclesReportTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.allCyclesReportTable.Controls.Add(this.label7, 3, 0);
             this.allCyclesReportTable.Controls.Add(this.label6, 2, 0);
             this.allCyclesReportTable.Controls.Add(this.label5, 1, 0);
@@ -227,7 +233,6 @@ namespace PrimeNumbers.UI
             this.allCyclesReportTable.Name = "allCyclesReportTable";
             this.allCyclesReportTable.RowCount = 1;
             this.allCyclesReportTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.allCyclesReportTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.allCyclesReportTable.Size = new System.Drawing.Size(529, 338);
             this.allCyclesReportTable.TabIndex = 0;
             this.allCyclesReportTable.Paint += new System.Windows.Forms.PaintEventHandler(this.allCyclesReportTable_Paint);
@@ -235,7 +240,7 @@ namespace PrimeNumbers.UI
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(425, 1);
+            this.label7.Location = new System.Drawing.Point(416, 1);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 3;
@@ -245,7 +250,7 @@ namespace PrimeNumbers.UI
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(281, 1);
+            this.label6.Location = new System.Drawing.Point(272, 1);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(99, 13);
             this.label6.TabIndex = 2;
@@ -255,7 +260,7 @@ namespace PrimeNumbers.UI
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(91, 1);
+            this.label5.Location = new System.Drawing.Point(88, 1);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(120, 13);
             this.label5.TabIndex = 1;
@@ -275,14 +280,52 @@ namespace PrimeNumbers.UI
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.cycleNumberTextBox);
+            this.panel3.Controls.Add(this.label8);
+            this.panel3.Controls.Add(this.breakTimeTextBox);
+            this.panel3.Controls.Add(this.label9);
             this.panel3.Controls.Add(this.wholeTimeTextBox);
             this.panel3.Controls.Add(this.wholeTimeLabel);
             this.panel3.Controls.Add(this.cycleTimeTextBox);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Location = new System.Drawing.Point(251, 5);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(414, 65);
+            this.panel3.Size = new System.Drawing.Size(538, 73);
             this.panel3.TabIndex = 8;
+            // 
+            // cycleNumberTextBox
+            // 
+            this.cycleNumberTextBox.Location = new System.Drawing.Point(379, 43);
+            this.cycleNumberTextBox.Name = "cycleNumberTextBox";
+            this.cycleNumberTextBox.Size = new System.Drawing.Size(130, 20);
+            this.cycleNumberTextBox.TabIndex = 12;
+            this.cycleNumberTextBox.TextChanged += new System.EventHandler(this.cycleNumberTextBox_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(287, 49);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(74, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Cycle number:";
+            // 
+            // breakTimeTextBox
+            // 
+            this.breakTimeTextBox.Location = new System.Drawing.Point(379, 14);
+            this.breakTimeTextBox.Name = "breakTimeTextBox";
+            this.breakTimeTextBox.Size = new System.Drawing.Size(130, 20);
+            this.breakTimeTextBox.TabIndex = 9;
+            this.breakTimeTextBox.TextChanged += new System.EventHandler(this.breakTimeTextBox_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(287, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(60, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Break time:";
             // 
             // wholeTimeTextBox
             // 
@@ -326,6 +369,10 @@ namespace PrimeNumbers.UI
             // timer2
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // breakTimer
+            // 
+            this.breakTimer.Tick += new System.EventHandler(this.breakTimer_Tick);
             // 
             // MainForm
             // 
@@ -379,6 +426,11 @@ namespace PrimeNumbers.UI
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox cycleNumberTextBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox breakTimeTextBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Timer breakTimer;
     }
 }
 

@@ -9,7 +9,7 @@ namespace PrimeNumbers.DTO
         public TimeSpan CycleExecutionTime { get; set; }
         public ulong ComputedBiggestPrime { get; set; }
         public TimeSpan PrimeComputeTime { get; set; }
-        public List<int> Primes { get; set; }
+        public List<long> Primes { get; set; }
         public PrimeGenerationState State{ get; set; }
     }
 }

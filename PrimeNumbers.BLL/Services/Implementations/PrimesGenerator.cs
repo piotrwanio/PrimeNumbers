@@ -7,20 +7,22 @@ namespace PrimeNumbers.BLL.Services.Implementations
 {
     public class PrimesGenerator : IPrimesGenerator
     {
-        public static List<int> primesList = new List<int>();
+        public static List<long> primesList = new List<long>();
         static bool[] isPrime = new bool[0];
         private bool _turnedOn = true;
 
         public bool TurnedOn { get { return _turnedOn; } set { _turnedOn = value; } }
 
-        public async Task<(IList<int>, int, int, int)> GenerateUsingSieveOfAtkin(int limit, long elpsd, int x = 1, int y = 1, int lastPrime = 1)
+        public async Task<(IList<long>, int, int, int)> GenerateUsingSieveOfAtkin(int limit, long elpsd, int x = 1,
+            int y = 1, int lastPrime = 1)
         {
-            if (isPrime.Length < limit)
+            if (isPrime.Length < limit || (x == 1 && y == 1))
             {
                 isPrime = new bool[limit + 1];
                 for (int i = 0; i < limit; i++)
                     isPrime[i] = false;
             }
+
             var sqrt = Math.Sqrt(limit);
 
             int yInit = y;
@@ -28,8 +30,14 @@ namespace PrimeNumbers.BLL.Services.Implementations
 
             for (; x <= sqrt; x++)
             {
-                if (x == xInit) { y = yInit; }
-                else { y = 1; }
+                if (x == xInit)
+                {
+                    y = yInit;
+                }
+                else
+                {
+                    y = 1;
+                }
 
                 for (; y <= sqrt; y++)
                 {
@@ -46,14 +54,16 @@ namespace PrimeNumbers.BLL.Services.Implementations
                         isPrime[n] ^= true;
                     if (!TurnedOn)
                     {
-                        return (new List<int>(), x, y, limit);
+                        return (new List<long>(), x, y, limit);
                     }
                 }
+
                 if (!TurnedOn)
                 {
-                    return (new List<int>(), x, y, limit);
+                    return (new List<long>(), x, y, limit);
                 }
             }
+
             isPrime[2] = isPrime[3] = isPrime[5] = true;
 
             for (int n = 5; n <= sqrt; n++)
@@ -63,6 +73,7 @@ namespace PrimeNumbers.BLL.Services.Implementations
                     for (int k = nSquared; k <= limit; k += nSquared)
                         isPrime[k] = false;
                 }
+
             primesList.Clear();
             primesList.Add(2);
             primesList.Add(3);
@@ -72,10 +83,5 @@ namespace PrimeNumbers.BLL.Services.Implementations
 
             return (primesList, x, y, limit);
         }
-
-        //public IList<int> Generate()
-        //{
-
-        //} 
     }
 }

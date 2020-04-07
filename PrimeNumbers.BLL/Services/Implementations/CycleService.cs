@@ -5,43 +5,62 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace PrimeNumbers.BLL.Services.Implementations
 {
     public class CycleService : ICycleService
     {
-        private IPrimesGenerator _primesGenerator;
+        private readonly IPrimesGenerator _primesGenerator;
+        private readonly SegmentedPrimesGenerator _segmentedPrimesGenerator;
+        private readonly ILogger _logger;
 
-        public CycleService(IPrimesGenerator primesGenerator)
+        IList<long> listOfPrimes = new List<long>() { 1 };
+
+        public CycleService(IPrimesGenerator primesGenerator, ILogger logger)
         {
             _primesGenerator = primesGenerator;
+            _logger = logger;
+            _segmentedPrimesGenerator = new SegmentedPrimesGenerator(primesGenerator);
         }
 
         public async Task<CycleInfo> StartCycle(int cycleTime, int breakTime, PrimeGenerationState state)
         {
+            _logger.Information("Primes generating cycle started");
+
             _primesGenerator.TurnedOn = true;
 
             var elpsd = -DateTime.Now.Ticks;
-            int x = 1, y = 1, limit = 10000;
-            IList<int> listOfPrimes = new List<int>() { 1 };
 
-            x = state.X;
-            y = state.Y;
-            limit = state.Limit;
+            var x = state.X;
+            var y = state.Y;
+            var limit = state.Limit;
 
 
             while (_primesGenerator.TurnedOn)
             {
-                IList<int> listOfPrimesTemp = new List<int>();
-                (listOfPrimesTemp, x, y, limit) = await _primesGenerator.GenerateUsingSieveOfAtkin(limit, elpsd, x, y, listOfPrimes.Last());
-                if (listOfPrimesTemp.Count != 0) listOfPrimes = listOfPrimesTemp;
+                IList<long> listOfPrimesTemp = new List<long>();
 
-                if (x * x > limit && y * y > limit)
+                //First stage of generating primes - with use of sieve of atkin
+                if ((limit) < int.MaxValue/4)
                 {
-                    x = 1;
-                    y = 1;
-                    limit *= 2;
+                    (listOfPrimesTemp, x, y, limit) =
+                        await _primesGenerator.GenerateUsingSieveOfAtkin((int)limit, elpsd, x, y, 0);
+                    if (x * x > limit && y * y > limit)
+                    {
+                        x = 1;
+                        y = 1;
+                        limit *= 2;
+                    }
                 }
+                else
+                {
+                    //Second stage of generating primes - segregation sieve for large numbers
+                    listOfPrimes.Concat(_segmentedPrimesGenerator.GeneratePrimes(listOfPrimes.Max(), limit));
+                    limit += 100000000;
+                }
+
+                if (listOfPrimesTemp.Count != 0) listOfPrimes = listOfPrimesTemp;
             }
 
             return new CycleInfo
@@ -60,6 +79,8 @@ namespace PrimeNumbers.BLL.Services.Implementations
         public void StopCycle()
         {
             _primesGenerator.TurnedOn = false;
+
+            _logger.Information("Cycle stopped.");
         }
     }
 }

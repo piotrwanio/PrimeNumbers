@@ -11,15 +11,14 @@ namespace PrimeNumbers.BLL.Services.Implementations
 {
     public class XmlWriter : IXmlWriter
     {
+        //TODO: Need to fix timestamp serialization
+        //TODO: using? dispose?
         public void Serialize(IList<BasicCycleInfo> cycleInfo)
         {
-            // Creates an instance of the XmlSerializer class;
-            // specifies the type of object to serialize.
             XmlSerializer serializer =
             new XmlSerializer(typeof(List<BasicCycleInfo>));
             TextWriter writer = new StreamWriter("cycles_report.xml");
 
-            // Serializes the purchase order, and closes the TextWriter.
             serializer.Serialize(writer, cycleInfo.ToList());
             writer.Close();
         }

@@ -1,18 +1,32 @@
-﻿using PrimeNumbers.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace PrimeNumbers.DTO
 {
     public class BasicCycleInfo
     {
         public int CycleId { get; set; }
+
+        [XmlIgnore]
         public TimeSpan CycleExecutionTime { get; set; }
+
         public ulong ComputedBiggestPrime { get; set; }
+
+        [XmlIgnore]
         public TimeSpan PrimeComputeTime { get; set; }
-        public PrimeGenerationState State { get; set; }
+
+        [XmlElement("CycleExecutionTime")]
+        public string CycleExecutionTimeString
+        {
+            get => CycleExecutionTime.ToString(@"hh\:mm\:ss");
+            set => CycleExecutionTime = TimeSpan.Parse(value);
+        }
+
+        [XmlElement("PrimeComputeTime")]
+        public string PrimeComputeTimeString
+        {
+            get => PrimeComputeTime.ToString(@"hh\:mm\:ss");
+            set => CycleExecutionTime = TimeSpan.Parse(value);
+        }
     }
 }

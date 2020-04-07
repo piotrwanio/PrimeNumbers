@@ -12,67 +12,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Serilog;
 
 namespace PrimeNumbers.UI
 {
-    //TODO: Add saving state for previous cycles (maybe in cycleservice)? DONE+-
-    //TODO: maybe showing detailed info in separate tab? DONE+-
-    //TODO: Stopping cycle DONE
-    //TODO: Add missing informations to CycleInfo about how much time it takes to finish cycle etc. DONE+-
-    //TODO: FIX BIG PRIMES DONE
-    //TODO: Automapper profile utilize DONE
-
-
-    //TODO: change ints to longs or ulongs?
-    //TODO: Add handling out of memory and overflow exceptions and info about maximum number handled by long numbers
-    //TODO: info about not finding bigger number in next cycle
-
-    //TODO: Add logging
-
-    //TODO: maybe xmldocument instead of xmlserializer
-    //TODO: Maybe reporting service?
-
-
     public partial class MainForm : Form
     {
         private readonly ICycleService _cycleService;
         private readonly IXmlWriter _xmlWriter;
         private readonly IMapper _mapper;
-        long startWholeTime = -DateTime.Now.Ticks;
-        long startCycleTime = -DateTime.Now.Ticks;
-        int cycleId = 1;
-        int cycleTimeInSec = 10;
-        int breakTimeInSec = 10;
+        private readonly ILogger _logger;
 
-        TimeSpan wholeTime = new TimeSpan();
+        private long _startCycleTime = -DateTime.Now.Ticks;
+        private long _startBreakTime = -DateTime.Now.Ticks;
+        private bool _cyclesStarted = false;
+        private int _cycleId = 1;
+        private readonly int _cycleTimeInSec = 60;
+        private readonly int _breakTimeInSec = 10;
+        private TimeSpan _wholeTime = new TimeSpan();
         private readonly IList<BasicCycleInfo> _allCycles = new List<BasicCycleInfo>();
-        PrimeGenerationState generatingState = new PrimeGenerationState()
+        private PrimeGenerationState _generatingState = new PrimeGenerationState()
         {
             X = 1,
             Y = 1,
             Limit = 1000000
         };
-
-        int x = 1, y = 1, r = 5;
-        IList<int> listOfPrimes = new List<int>() { 1 };
-        private int limit = 100000000;
-        private CycleInfo lastCycleResult = new CycleInfo();
+        private CycleInfo _lastCycleResult = new CycleInfo();
 
 
-
-        public MainForm(ICycleService cycleService, IXmlWriter xmlWriter, IMapper mapper)
+        public MainForm(ICycleService cycleService, IXmlWriter xmlWriter, IMapper mapper, ILogger logger)
         {
             InitializeComponent();
 
-            //runGeneralTimerAsync();
             timer1.Interval = 1000;
-
             timer2.Interval = 1000;
-
+            breakTimer.Interval = 1000;
 
             _cycleService = cycleService;
             _xmlWriter = xmlWriter;
             _mapper = mapper;
+            _logger = logger;
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -87,7 +66,11 @@ namespace PrimeNumbers.UI
 
         private async void startCyclesButton_Click(object sender, EventArgs e)
         {
-            await RunCycles();
+            _cyclesStarted = true;
+            while (_cyclesStarted)
+            {
+                await RunCycles();
+            }
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -112,8 +95,8 @@ namespace PrimeNumbers.UI
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            wholeTime += TimeSpan.FromMilliseconds(1000);
-            this.wholeTimeTextBox.Text = wholeTime.ToString(@"hh\:mm\:ss");
+            _wholeTime += TimeSpan.FromMilliseconds(1000);
+            this.wholeTimeTextBox.Text = _wholeTime.ToString(@"hh\:mm\:ss");
         }
 
         private void wholeTimeLabel_Click(object sender, EventArgs e)
@@ -123,17 +106,21 @@ namespace PrimeNumbers.UI
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (TimeSpan.FromTicks(startCycleTime + DateTime.Now.Ticks) > TimeSpan.FromSeconds(cycleTimeInSec))
+            if (TimeSpan.FromTicks(_startCycleTime + DateTime.Now.Ticks) > TimeSpan.FromSeconds(_cycleTimeInSec))
             {
                 _cycleService.StopCycle();
             }
-            var cycleTime = TimeSpan.FromTicks(startCycleTime + DateTime.Now.Ticks);
+            var cycleTime = TimeSpan.FromTicks(_startCycleTime + DateTime.Now.Ticks);
             this.cycleTimeTextBox.Text = cycleTime.ToString(@"hh\:mm\:ss");
         }
 
         private void stopCycleButton_Click(object sender, EventArgs e)
         {
             _cycleService.StopCycle();
+            _cyclesStarted = false;
+            timer1.Stop();
+            timer2.Stop();
+            breakTimer.Stop();
         }
 
         private void allCyclesReportTable_Paint(object sender, PaintEventArgs e)
@@ -146,39 +133,85 @@ namespace PrimeNumbers.UI
 
         }
 
+        private void breakTimeTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cycleNumberTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void breakTimer_Tick(object sender, EventArgs e)
+        {
+            if (TimeSpan.FromTicks(_startBreakTime + DateTime.Now.Ticks) > TimeSpan.FromSeconds(_breakTimeInSec))
+            {
+                _cyclesStarted = true;
+                RunCycles();
+            }
+            var breakTime = TimeSpan.FromTicks(_startBreakTime + DateTime.Now.Ticks);
+            this.breakTimeTextBox.Text = breakTime.ToString(@"hh\:mm\:ss");
+        }
+
         async Task RunCycles()
         {
 
             var cycleTime = 5;
             var breakTime = 1;
 
+            cycleNumberTextBox.Text = _cycleId.ToString();
+
+            breakTimer.Stop();
             timer2.Start();
             timer1.Start();
 
-            await Task.Run(async () =>
-               {
-                   startCycleTime = -DateTime.Now.Ticks;
-                   lastCycleResult = await _cycleService.StartCycle(cycleTime, breakTime, generatingState);
-                   lastCycleResult.CycleExecutionTime = TimeSpan.FromTicks(startCycleTime + DateTime.Now.Ticks);
-                   timer2.Stop();
-                   timer1.Stop();
-                   lastCycleResult.PrimeComputeTime = wholeTime;
-                   lastCycleResult.CycleId = cycleId;
-                   cycleId++;
-               });
+            try
+            {
+                await Task.Run(async () =>
+                   {
+                       _startCycleTime = -DateTime.Now.Ticks;
+                       _lastCycleResult = await _cycleService.StartCycle(cycleTime, breakTime, _generatingState);
 
-            generatingState = lastCycleResult.State;
+                       _lastCycleResult.CycleExecutionTime = TimeSpan.FromTicks(_startCycleTime + DateTime.Now.Ticks);
+                       timer2.Stop();
+                       timer1.Stop();
+                       _cyclesStarted = false;
+
+                       _startBreakTime = -DateTime.Now.Ticks;
+                       _lastCycleResult.PrimeComputeTime = _wholeTime;
+                       _lastCycleResult.CycleId = _cycleId;
+                       _cycleId++;
+                   });
+            }
+            catch (OutOfMemoryException exception)
+            {
+                _logger.Error("Error occured, it was probably caused by long type memory limit.");
+                _logger.Error(exception.ToString());
+
+                var notifyForm = new NotificationForm();
+                notifyForm.message.Text =
+                    "Error occured, it was probably caused by long type memory limit.";
+                notifyForm.Show();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e.ToString());
+            }
+
+            _generatingState = _lastCycleResult.State;
 
 
+            breakTimer.Start();
 
-            var shortCycleResult = _mapper.Map<BasicCycleInfo>(lastCycleResult);
+            var shortCycleResult = _mapper.Map<BasicCycleInfo>(_lastCycleResult);
             _allCycles.Add(shortCycleResult);
-            AddRowToPanel(this.allCyclesReportTable, new string[] { shortCycleResult.CycleId.ToString(), shortCycleResult.ComputedBiggestPrime.ToString(), shortCycleResult.PrimeComputeTime.ToString(), shortCycleResult.CycleExecutionTime.ToString() });
+            AddRowToPanel(this.allCyclesReportTable, new string[] { shortCycleResult.CycleId.ToString(), shortCycleResult.ComputedBiggestPrime.ToString(), shortCycleResult.PrimeComputeTime.ToString(@"hh\:mm\:ss"), shortCycleResult.CycleExecutionTime.ToString(@"hh\:mm\:ss") });
 
             listView1.BeginUpdate();
             listView1.Items.Clear();
 
-            foreach (var prime in lastCycleResult.Primes.OrderBy(p => p).Take(100))
+            foreach (var prime in _lastCycleResult.Primes.OrderBy(p => p).Take(100))
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = prime.ToString();
