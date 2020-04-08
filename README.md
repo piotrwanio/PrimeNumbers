@@ -3,7 +3,7 @@ WinForms application for generating prime numbers in cycles
 
 # UI: 
 
-![alt text](https://imgur.com/uBlOlEk)
+![UI screenshot](https://i.imgur.com/uBlOlEk.png)
 
 # Functionalities:
 - Generating prime numbers in max 5 min cycles with 1 min break
