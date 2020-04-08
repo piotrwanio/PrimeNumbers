@@ -14,7 +14,7 @@ namespace PrimeNumbers.Services.Tests
             var target = new PrimesGenerator();
 
             //Act
-            var result = (target.GenerateUsingSieveOfAtkin(1000, -DateTime.Now.Ticks).Result.Item1).OrderBy(i => i).Take(10);
+            var result = (target.GenerateUsingSieveOfAtkin(1000).Result.Item1).OrderBy(i => i).Take(10);
 
             //Asserts
             Assert.NotNull(result);

@@ -7,7 +7,7 @@ using PrimeNumbers.BLL.Services.Interfaces;
 
 namespace PrimeNumbers.BLL.Services.Implementations
 {
-    public class SegmentedPrimesGenerator
+    public class SegmentedPrimesGenerator : ISegmentedPrimesGenerator
     {
         private readonly IPrimesGenerator _sievePrimesGenerator;
 
@@ -24,7 +24,7 @@ namespace PrimeNumbers.BLL.Services.Implementations
 
             IList<long> primes;
 
-            (primes, _, _, _) = _sievePrimesGenerator.GenerateUsingSieveOfAtkin((int)limit, 0,1,1).Result;
+            (primes, _, _, _) = _sievePrimesGenerator.GenerateUsingSieveOfAtkin((int)limit,1,1).Result;
             if (primes.Count == 0)
                 return primes;
 

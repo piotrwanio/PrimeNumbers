@@ -13,8 +13,8 @@ namespace PrimeNumbers.BLL.Services.Implementations
 
         public bool TurnedOn { get { return _turnedOn; } set { _turnedOn = value; } }
 
-        public async Task<(IList<long>, int, int, int)> GenerateUsingSieveOfAtkin(int limit, long elpsd, int x = 1,
-            int y = 1, int lastPrime = 1)
+        public async Task<(IList<long>, int, int, int)> GenerateUsingSieveOfAtkin(int limit, int x = 1,
+            int y = 1)
         {
             if (isPrime.Length < limit || (x == 1 && y == 1))
             {

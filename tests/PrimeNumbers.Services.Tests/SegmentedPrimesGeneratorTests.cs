@@ -24,7 +24,7 @@ namespace PrimeNumbers.Services.Tests
             IList<long> primes = new List<long>() {2, 3, 5};
 
 
-            primesGenerator.Setup(p => p.GenerateUsingSieveOfAtkin((int)limit, 0, 1, 1, 1))
+            primesGenerator.Setup(p => p.GenerateUsingSieveOfAtkin((int)limit,1, 1))
                 .Returns(Task.FromResult((primes, 1, 1, 1)));
 
             var target = new SegmentedPrimesGenerator(primesGenerator.Object);

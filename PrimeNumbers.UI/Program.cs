@@ -26,6 +26,7 @@ namespace PrimeNumbers.UI
             var builder = new ContainerBuilder();
       
             builder.RegisterType<PrimesGenerator>().As<IPrimesGenerator>();
+            builder.RegisterType<SegmentedPrimesGenerator>().As<ISegmentedPrimesGenerator>();
             builder.RegisterType<CycleService>().As<ICycleService>();
             builder.RegisterType<XmlWriter>().As<IXmlWriter>();
 

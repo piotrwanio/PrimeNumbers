@@ -12,16 +12,16 @@ namespace PrimeNumbers.BLL.Services.Implementations
     public class CycleService : ICycleService
     {
         private readonly IPrimesGenerator _primesGenerator;
-        private readonly SegmentedPrimesGenerator _segmentedPrimesGenerator;
+        private readonly ISegmentedPrimesGenerator _segmentedPrimesGenerator;
         private readonly ILogger _logger;
 
         IList<long> listOfPrimes = new List<long>() { 1 };
 
-        public CycleService(IPrimesGenerator primesGenerator, ILogger logger)
+        public CycleService(IPrimesGenerator primesGenerator, ILogger logger, ISegmentedPrimesGenerator segmentedPrimesGenerator)
         {
             _primesGenerator = primesGenerator;
             _logger = logger;
-            _segmentedPrimesGenerator = new SegmentedPrimesGenerator(primesGenerator);
+            _segmentedPrimesGenerator = segmentedPrimesGenerator;
         }
 
         public async Task<CycleInfo> StartCycle(int cycleTime, int breakTime, PrimeGenerationState state)
@@ -45,7 +45,7 @@ namespace PrimeNumbers.BLL.Services.Implementations
                 if ((limit) < int.MaxValue/4)
                 {
                     (listOfPrimesTemp, x, y, limit) =
-                        await _primesGenerator.GenerateUsingSieveOfAtkin((int)limit, elpsd, x, y, 0);
+                        await _primesGenerator.GenerateUsingSieveOfAtkin((int)limit, x, y);
                     if (x * x > limit && y * y > limit)
                     {
                         x = 1;
