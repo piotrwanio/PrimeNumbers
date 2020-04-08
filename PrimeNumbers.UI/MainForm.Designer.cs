@@ -58,8 +58,8 @@ namespace PrimeNumbers.UI
             this.wholeTimeLabel = new System.Windows.Forms.Label();
             this.cycleTimeTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.generalTimer = new System.Windows.Forms.Timer(this.components);
+            this.cycleTimer = new System.Windows.Forms.Timer(this.components);
             this.breakTimer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -93,7 +93,6 @@ namespace PrimeNumbers.UI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(804, 464);
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // panel1
             // 
@@ -153,7 +152,6 @@ namespace PrimeNumbers.UI
             this.label3.TabIndex = 7;
             this.label3.Text = "Prime numbers generator";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // panel2
             // 
@@ -203,7 +201,6 @@ namespace PrimeNumbers.UI
             this.label2.TabIndex = 7;
             this.label2.Text = "Calculated primes in previous cycle";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // tabPage2
             // 
@@ -235,7 +232,6 @@ namespace PrimeNumbers.UI
             this.allCyclesReportTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.allCyclesReportTable.Size = new System.Drawing.Size(529, 338);
             this.allCyclesReportTable.TabIndex = 0;
-            this.allCyclesReportTable.Paint += new System.Windows.Forms.PaintEventHandler(this.allCyclesReportTable_Paint);
             // 
             // label7
             // 
@@ -276,7 +272,6 @@ namespace PrimeNumbers.UI
             this.label4.TabIndex = 0;
             this.label4.Text = "Cycle Id";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // panel3
             // 
@@ -299,7 +294,6 @@ namespace PrimeNumbers.UI
             this.cycleNumberTextBox.Name = "cycleNumberTextBox";
             this.cycleNumberTextBox.Size = new System.Drawing.Size(130, 20);
             this.cycleNumberTextBox.TabIndex = 12;
-            this.cycleNumberTextBox.TextChanged += new System.EventHandler(this.cycleNumberTextBox_TextChanged);
             // 
             // label8
             // 
@@ -316,7 +310,6 @@ namespace PrimeNumbers.UI
             this.breakTimeTextBox.Name = "breakTimeTextBox";
             this.breakTimeTextBox.Size = new System.Drawing.Size(130, 20);
             this.breakTimeTextBox.TabIndex = 9;
-            this.breakTimeTextBox.TextChanged += new System.EventHandler(this.breakTimeTextBox_TextChanged);
             // 
             // label9
             // 
@@ -342,7 +335,6 @@ namespace PrimeNumbers.UI
             this.wholeTimeLabel.Size = new System.Drawing.Size(117, 13);
             this.wholeTimeLabel.TabIndex = 7;
             this.wholeTimeLabel.Text = "Whole calculation time:";
-            this.wholeTimeLabel.Click += new System.EventHandler(this.wholeTimeLabel_Click);
             // 
             // cycleTimeTextBox
             // 
@@ -350,7 +342,6 @@ namespace PrimeNumbers.UI
             this.cycleTimeTextBox.Name = "cycleTimeTextBox";
             this.cycleTimeTextBox.Size = new System.Drawing.Size(130, 20);
             this.cycleTimeTextBox.TabIndex = 5;
-            this.cycleTimeTextBox.TextChanged += new System.EventHandler(this.cycleTimeTextBox_TextChanged);
             // 
             // label1
             // 
@@ -360,15 +351,14 @@ namespace PrimeNumbers.UI
             this.label1.Size = new System.Drawing.Size(115, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Cycle calculation  time:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // timer1
+            // generalTimer
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.generalTimer.Tick += new System.EventHandler(this.generalTimer_Tick);
             // 
-            // timer2
+            // cycleTimer
             // 
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            this.cycleTimer.Tick += new System.EventHandler(this.cycleTimer_Tick);
             // 
             // breakTimer
             // 
@@ -413,8 +403,8 @@ namespace PrimeNumbers.UI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox wholeTimeTextBox;
         private System.Windows.Forms.Label wholeTimeLabel;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer generalTimer;
+        private System.Windows.Forms.Timer cycleTimer;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;

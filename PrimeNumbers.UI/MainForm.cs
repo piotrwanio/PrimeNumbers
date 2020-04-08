@@ -44,19 +44,14 @@ namespace PrimeNumbers.UI
         {
             InitializeComponent();
 
-            timer1.Interval = 1000;
-            timer2.Interval = 1000;
+            generalTimer.Interval = 1000;
+            cycleTimer.Interval = 1000;
             breakTimer.Interval = 1000;
 
             _cycleService = cycleService;
             _xmlWriter = xmlWriter;
             _mapper = mapper;
             _logger = logger;
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void exportAsXmlButton_Click(object sender, EventArgs e)
@@ -73,38 +68,13 @@ namespace PrimeNumbers.UI
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cycleTimeTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
+        private void generalTimer_Tick(object sender, EventArgs e)
         {
             _wholeTime += TimeSpan.FromMilliseconds(1000);
             this.wholeTimeTextBox.Text = _wholeTime.ToString(@"hh\:mm\:ss");
         }
 
-        private void wholeTimeLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void timer2_Tick(object sender, EventArgs e)
+        private void cycleTimer_Tick(object sender, EventArgs e)
         {
             if (TimeSpan.FromTicks(_startCycleTime + DateTime.Now.Ticks) > TimeSpan.FromSeconds(_cycleTimeInSec))
             {
@@ -118,29 +88,9 @@ namespace PrimeNumbers.UI
         {
             _cycleService.StopCycle();
             _cyclesStarted = false;
-            timer1.Stop();
-            timer2.Stop();
+            generalTimer.Stop();
+            cycleTimer.Stop();
             breakTimer.Stop();
-        }
-
-        private void allCyclesReportTable_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void breakTimeTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cycleNumberTextBox_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void breakTimer_Tick(object sender, EventArgs e)
@@ -163,8 +113,8 @@ namespace PrimeNumbers.UI
             cycleNumberTextBox.Text = _cycleId.ToString();
 
             breakTimer.Stop();
-            timer2.Start();
-            timer1.Start();
+            cycleTimer.Start();
+            generalTimer.Start();
 
             try
             {
@@ -174,8 +124,8 @@ namespace PrimeNumbers.UI
                        _lastCycleResult = await _cycleService.StartCycle(cycleTime, breakTime, _generatingState);
 
                        _lastCycleResult.CycleExecutionTime = TimeSpan.FromTicks(_startCycleTime + DateTime.Now.Ticks);
-                       timer2.Stop();
-                       timer1.Stop();
+                       cycleTimer.Stop();
+                       generalTimer.Stop();
                        _cyclesStarted = false;
 
                        _startBreakTime = -DateTime.Now.Ticks;
@@ -200,8 +150,6 @@ namespace PrimeNumbers.UI
             }
 
             _generatingState = _lastCycleResult.State;
-
-
             breakTimer.Start();
 
             var shortCycleResult = _mapper.Map<BasicCycleInfo>(_lastCycleResult);
