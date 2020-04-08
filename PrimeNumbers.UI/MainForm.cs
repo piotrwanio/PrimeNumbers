@@ -27,8 +27,8 @@ namespace PrimeNumbers.UI
         private long _startBreakTime = -DateTime.Now.Ticks;
         private bool _cyclesStarted = false;
         private int _cycleId = 1;
-        private readonly int _cycleTimeInSec = 60;
-        private readonly int _breakTimeInSec = 10;
+        private readonly int _cycleTimeInSec = 300;
+        private readonly int _breakTimeInSec = 60;
         private TimeSpan _wholeTime = new TimeSpan();
         private readonly IList<BasicCycleInfo> _allCycles = new List<BasicCycleInfo>();
         private PrimeGenerationState _generatingState = new PrimeGenerationState()
